@@ -126,12 +126,12 @@ for epoch in range(num_epochs):
         g_optimizer.step()
 
         # 打印日志
-        if i % 10 == 0:
+        if i % 50 == 0:
             print(f"[Epoch {epoch}/{num_epochs}] [Batch {i}/{len(dataloader)}] "
                   f"[D loss: {loss_D.item()}] [G loss: {loss_G.item()}]")
 
         # 保存生成图像
-        if i % 10 == 0:
+        if i % 400 == 0:
             image = (fake_imgs[:16].data + 1) / 2
             torchvision.utils.save_image(image, f"image_{epoch}_{i}.png", nrow=4)
 
