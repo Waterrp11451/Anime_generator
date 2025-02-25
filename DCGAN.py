@@ -128,15 +128,14 @@ for epoch in range(start_epoch, num_epoch):
         d_loss.backward()
         d_optimizer.step()
 
-        if i % 10 == 0:
-            print(f"step:{len(dataloader)*epoch+i}, recons_loss:{recons_loss.item()}, g_loss:{g_loss.item()}, d_loss:{d_loss.item()}, real_loss:{real_loss.item()}, fake_loss:{fake_loss.item()}")
-
         if i % 50 == 0:
+            print(f"step:{len(dataloader)*epoch+i}, recons_loss:{recons_loss.item()}, g_loss:{g_loss.item()}, d_loss:{d_loss.item()}, real_loss:{real_loss.item()}, fake_loss:{fake_loss.item()}")
+            progress = {'epoch': epoch, 'batch': 0}
+            torch.save(progress, 'training_progress.pth')
+            torch.save(generator.state_dict(), 'generator_weights.pth')
+            torch.save(discriminator.state_dict(), 'discriminator_weights.pth')
+            torch.save(g_optimizer.state_dict(), 'g_optimizer_state.pth')
+            torch.save(d_optimizer.state_dict(), 'd_optimizer_state.pth')
+        if i % 400 == 0:
             image = (pred_images[:16].data + 1) / 2
             torchvision.utils.save_image(image, f"image_{len(dataloader) * epoch + i}.png", nrow=4)
-        progress = {'epoch': epoch, 'batch': 0}
-        torch.save(progress, 'training_progress.pth')
-        torch.save(generator.state_dict(), 'generator_weights.pth')
-        torch.save(discriminator.state_dict(), 'discriminator_weights.pth')
-        torch.save(g_optimizer.state_dict(), 'g_optimizer_state.pth')
-        torch.save(d_optimizer.state_dict(), 'd_optimizer_state.pth')
